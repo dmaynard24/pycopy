@@ -1,0 +1,13 @@
+{
+	"editor.formatOnSave": true,
+	"[html]": {
+		"editor.formatOnSave": false
+	},
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"python.pythonPath": "C:\\Users\\dmaynard\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+	"python.linting.pylintEnabled": true,
+	"python.linting.enabled": true,
+	"python.formatting.provider": "yapf",
+	"python.formatting.yapfArgs": ["--style", "{indent_width: 2, use_tabs: true, continuation_align_style: fixed, continuation_indent_width: 2}"]
+}
