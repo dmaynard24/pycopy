@@ -1,9 +1,9 @@
 import os
 
 # change these parameters as needed
-base_dir = 'C:\\repos\\touchless-scaling\\src\\assets\\font\\Helvetica Now'
-find_str = 'W05'
-replace_str = ''
+base_dir = 'C:\\Users\\dmayna\\Desktop\\CareerChoice\\Stories\\7685'
+find_str = 'Onsite'
+replace_str = 'Online'
 
 import os
 
