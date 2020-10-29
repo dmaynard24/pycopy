@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import html
 
 # defaults
-default_categories = 'CCFE,FOS'
+default_categories = 'CCFE,APP'
 default_language = 'en_US'
 default_protected = 'false'
 xl_dir = 'C:\\Users\\dmayna\\Desktop\\CareerChoice\\Stories\\US8300\\Final content\\'
@@ -28,6 +28,7 @@ row_count = wb_sheet_master.max_row  # last row with content
 def write_xml(out_dir, filename, xml, root_node):
 	prefix = f'<?xml version="1.0" encoding="UTF-8"?>\n<{root_node} xmlns="http://soap.sforce.com/2006/04/metadata">\n'
 	postfix = f'\n</{root_node}>'
+	# concat entire file contents
 	xml = f'{prefix}{xml.rstrip()}{postfix}'
 	xml_file = f'{out_dir}{filename}'
 	with open(xml_file, 'w', encoding='utf-8') as f:
@@ -35,7 +36,7 @@ def write_xml(out_dir, filename, xml, root_node):
 
 
 def write_custom_labels():
-	# read master workbook, write to file
+	# read master workbook and create XML nodes for each label
 	xml = ''
 	for row in range(1, row_count + 1):
 		label = wb_sheet_master[f'A{row}'].value
@@ -54,17 +55,28 @@ def write_custom_labels():
 		xml += f'\n\t</labels>\n'
 	out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\labels\\'
 	filename = 'CustomLabels.labels-meta.xml'
+
+	# write the concatenated xml to a file
 	write_xml(out_dir, filename, xml, 'CustomLabels')
 
 
 def write_translations():
-	# read all translation workbooks, write their contents to files
+	# read all translation workbooks
 	for lang in filenames.keys():
-		xml = ''
 		wb_filename = filenames[lang]
 		wb = load_workbook(filename=f'{xl_dir}{wb_filename}.xlsx')
-		# go over all rows and create XML nodes for each lang
 		wb_sheet = wb[sheet_name]
+
+		# catch error if this workbook has different number of rows, the data needs to be massaged
+		wb_sheet_row_count = wb_sheet.max_row
+		if wb_sheet_row_count != row_count:
+			print(
+				f'Error occurred. The {lang} workbook has {wb_sheet_row_count} while the master workbook has {row_count}.'
+			)
+			continue
+
+		# go over all rows and create XML nodes for each lang
+		xml = ''
 		for row in range(1, row_count + 1):
 			label = wb_sheet[f'A{row}'].value
 			name = wb_sheet_master[f'B{row}'].value
@@ -76,6 +88,8 @@ def write_translations():
 			xml += f'\t<customLabels>\n\t\t<label>{label}</label>\n\t\t<name>{name}</name>\n\t</customLabels>\n'
 		out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\translations\\'
 		filename = f'{lang}.translation-meta.xml'
+
+		# write the concatenated xml to a file
 		write_xml(out_dir, filename, xml, 'Translations')
 
 
