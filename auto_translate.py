@@ -1,7 +1,7 @@
 from openpyxl import load_workbook
 import html
 
-# defaults
+# default config, will probably need to tweak a couple of these before running
 default_categories = 'CCFE,APP'
 default_language = 'en_US'
 default_protected = 'false'
@@ -53,10 +53,10 @@ def write_custom_labels():
 		xml += f'\n\t\t<shortDescription>{name}</shortDescription>'
 		xml += f'\n\t\t<value>{label}</value>'
 		xml += f'\n\t</labels>\n'
-	out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\labels\\'
-	filename = 'CustomLabels.labels-meta.xml'
 
 	# write the concatenated xml to a file
+	out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\labels\\'
+	filename = 'CustomLabels.labels-meta.xml'
 	write_xml(out_dir, filename, xml, 'CustomLabels')
 
 
@@ -86,10 +86,10 @@ def write_translations():
 				continue
 			label = html.escape(label)
 			xml += f'\t<customLabels>\n\t\t<label>{label}</label>\n\t\t<name>{name}</name>\n\t</customLabels>\n'
-		out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\translations\\'
-		filename = f'{lang}.translation-meta.xml'
 
 		# write the concatenated xml to a file
+		out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\translations\\'
+		filename = f'{lang}.translation-meta.xml'
 		write_xml(out_dir, filename, xml, 'Translations')
 
 
