@@ -1,11 +1,12 @@
 from openpyxl import load_workbook
-import html
+import os, html
 
 # default config, will probably need to tweak a couple of these before running
-default_categories = 'CCFE,APP'
+default_categories = 'AP'
 default_language = 'en_US'
 default_protected = 'false'
 xl_dir = 'C:\\Users\\dmayna\\Desktop\\CareerChoice\\Stories\\US8300\\Final content\\'
+base_out_dir = 'C:\\repos\\ccnextgen-autotranslate\\force-app\\main\\default\\'
 # always open the "master", this will hold custom label names
 master_wb = load_workbook(
 	filename=f'{xl_dir}Copy of App Flow Content FINAL, ENG - USA.xlsx')
@@ -31,6 +32,10 @@ def write_xml(out_dir, filename, xml, root_node):
 	# concat entire file contents
 	xml = f'{prefix}{xml.rstrip()}{postfix}'
 	xml_file = f'{out_dir}{filename}'
+	try:
+		os.mkdir(out_dir)
+	except FileExistsError:
+		pass
 	with open(xml_file, 'w', encoding='utf-8') as f:
 		f.write(xml)
 
@@ -55,7 +60,7 @@ def write_custom_labels():
 		xml += f'\n\t</labels>\n'
 
 	# write the concatenated xml to a file
-	out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\labels\\'
+	out_dir = f'{base_out_dir}labels\\'
 	filename = 'CustomLabels.labels-meta.xml'
 	write_xml(out_dir, filename, xml, 'CustomLabels')
 
@@ -88,7 +93,7 @@ def write_translations():
 			xml += f'\t<customLabels>\n\t\t<label>{label}</label>\n\t\t<name>{name}</name>\n\t</customLabels>\n'
 
 		# write the concatenated xml to a file
-		out_dir = 'C:\\repos\\ccnextgen-sfdx\\force-app\\main\\default\\translations\\'
+		out_dir = f'{base_out_dir}translations\\'
 		filename = f'{lang}.translation-meta.xml'
 		write_xml(out_dir, filename, xml, 'Translations')
 
