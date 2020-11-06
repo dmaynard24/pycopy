@@ -20,7 +20,7 @@ filenames = {
 	'pl': 'App Flow Content FINAL, POL',
 	'sk': 'App Flow Content FINAL, SK',
 }
-sheet_name = '06 Payment'
+sheet_name = '08 Review'
 wb_sheet_master = master_wb[sheet_name]
 row_count = wb_sheet_master.max_row  # last row with content
 
@@ -40,6 +40,7 @@ def write_xml(out_dir, filename, xml, root_node):
 
 
 def write_custom_labels():
+	print('Writing custom labels.')
 	# read master workbook and create XML nodes for each label
 	xml = ''
 	for row in range(1, row_count + 1):
@@ -68,6 +69,7 @@ def write_custom_labels():
 def write_translations():
 	# read all translation workbooks
 	for lang in filenames.keys():
+		print(f'{lang}: Writing translations.')
 		wb_filename = filenames[lang]
 		wb = load_workbook(filename=f'{xl_dir}{wb_filename}.xlsx')
 		wb_sheet = wb[sheet_name]
